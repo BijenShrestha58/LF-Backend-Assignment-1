@@ -26,7 +26,7 @@ This repository contains the backend implementation for a To-Do application, off
 - If cloned, the project can be run using npm start command.
 - If the docker image is pulled, the project can be run using the command:
   `docker run -d -p 8000:8000 bijenshrestha58/todo_backend:latest`
-- The APIs can then be accessed using API clients like Postman or Thunder.
+- The APIs can then be accessed using API clients like Postman or Thunder in PORT 8000.
 
 ### Author
 

@@ -40,33 +40,64 @@ const tasks = [
   },
 ];
 
-export function getTasks() {
+/**
+ * Get all tasks.
+ * @returns {ITask[]} An array of task objects.
+ */
+export function getTasks(): ITask[] {
   return tasks;
 }
 
-export function getTaskById(id: string) {
-  return tasks.find(({ id: userId }) => userId === id);
+/**
+ * Get a task by its ID.
+ * @param {string} id - The ID of the task to retrieve.
+ * @returns {ITask | undefined} The task object if found, otherwise undefined.
+ */
+export function getTaskById(id: string): ITask | undefined {
+  return tasks.find((task) => task.id === id);
 }
 
-export function getTasksByUserId(id: string) {
+/**
+ * Get tasks by user ID.
+ * @param {string} id - The ID of the user whose tasks are to be retrieved.
+ * @returns {ITask[]} An array of task objects belonging to the user.
+ */
+export function getTasksByUserId(id: string): ITask[] {
   return tasks.filter((task) => task.userId === id);
 }
 
-export function createTask(task: ITask) {
-  tasks.push({ id: `${Number(tasks[tasks.length - 1].id) + 1}`, ...task });
+/**
+ * Create a new task and add it to the tasks array.
+ * @param {ITask} task - The task object to create.
+ */
+export function createTask(task: ITask): void {
+  const newId = `${Number(tasks[tasks.length - 1].id) + 1}`;
+  tasks.push({ id: newId, ...task });
 }
 
-export function updateTask(id: string, task: ITask) {
-  const targetTaskIndex = tasks.findIndex(({ id: taskId }) => taskId === id);
-  tasks[targetTaskIndex] = {
-    ...tasks[targetTaskIndex],
-    ...task,
-  };
+/**
+ * Update a task by its ID.
+ * @param {string} id - The ID of the task to update.
+ * @param {ITask} task - The updated task object.
+ * @returns {number} Index of the updated task in the tasks array, or -1 if the task was not found.
+ */
+export function updateTask(id: string, task: ITask): number {
+  const targetTaskIndex = tasks.findIndex((t) => t.id === id);
+  if (targetTaskIndex !== -1) {
+    tasks[targetTaskIndex] = { ...tasks[targetTaskIndex], ...task };
+  }
   return targetTaskIndex;
 }
 
-export function deleteTask(id: string) {
-  const targetTaskIndex = tasks.findIndex(({ id: taskId }) => taskId === id);
-  tasks.splice(targetTaskIndex, 1);
+/**
+ * Delete a task by its ID.
+ * @param {string} id - The ID of the task to delete.
+ * @returns {number} Index of the deleted task in the tasks array, or -1 if the task was not found.
+ */
+export function deleteTask(id: string): number {
+  const targetTaskIndex = tasks.findIndex((t) => t.id === id);
+  if (targetTaskIndex !== -1) {
+    tasks.splice(targetTaskIndex, 1);
+  }
   return targetTaskIndex;
 }

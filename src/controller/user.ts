@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-
+import HttpStatusCodes from "http-status-codes";
 import * as UserService from "../service/user";
+import loggerWithNameSpace from "../utils/logger";
 
+const logger = loggerWithNameSpace("UserController");
 /**
  * Get all users.
  * @param {Request} req - The Express Request object.
@@ -23,8 +25,8 @@ export function getUserById(req: Request, res: Response) {
   const { id } = req.params;
 
   const data = UserService.getUserById(id);
-
-  res.json(data);
+  logger.info("Called getUserById");
+  res.status(HttpStatusCodes.OK).json(data);
 }
 
 /**
@@ -33,10 +35,11 @@ export function getUserById(req: Request, res: Response) {
  * @param {Response} res - The Express Response object.
  * @returns {void}
  */
-export function createUser(req: Request, res: Response) {
+export async function createUser(req: Request, res: Response) {
   const { body } = req;
-  UserService.createUser(body);
-  res.json(body);
+  const data = await UserService.createUser(body);
+  console.log(data);
+  res.json(data);
 }
 
 /**

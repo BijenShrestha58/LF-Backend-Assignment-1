@@ -1,17 +1,12 @@
-import { IUser } from "../interfaces/user";
+import { ICreateUser, IUser } from "../interfaces/user";
 
-const users = [
+const users: IUser[] = [
   {
+    name: "User 1",
+    email: "user@gmail.com",
+    password: "$2b$10$Q0lt2JZR8LXUynB9uhVgSeXIVNKAL4zx0tiISGWdQREvNUF0zK.xe",
     id: "1",
-    name: "Bijen",
-  },
-  {
-    id: "2",
-    name: "Binod",
-  },
-  {
-    id: "3",
-    name: "Babin",
+    permissions: ["users.get"],
   },
 ];
 
@@ -36,9 +31,9 @@ export function getUserById(id: string): IUser | undefined {
  * Create a new user and add it to the users array.
  * @param {IUser} user - The user object to create.
  */
-export function createUser(user: IUser): void {
-  const newId = `${Number(users[users.length - 1].id) + 1}`;
-  users.push({ id: newId, ...user });
+export function createUser(user: ICreateUser): void {
+  const newId = `${Number(users[users.length - 1].id) + 1}` || "1";
+  users.push({ id: newId, ...user, permissions: [] });
 }
 
 /**
@@ -66,4 +61,8 @@ export function deleteUser(id: string): number {
     users.splice(targetUserIndex, 1);
   }
   return targetUserIndex;
+}
+
+export function getUserByEmail(email: string) {
+  return users.find(({ email: userEmail }) => userEmail === email);
 }

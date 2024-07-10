@@ -6,10 +6,11 @@ import {
   getUserById,
   updateUser,
 } from "../controller/user";
+import { authenticate, authorize } from "../middlewares/auth";
 
 const router = express();
 
-router.get("/", getUsers);
+router.get("/", authenticate, authorize("users.get"), getUsers);
 
 router.get("/:id", getUserById);
 

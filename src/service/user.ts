@@ -1,5 +1,6 @@
-import { IUser } from "../interfaces/user";
+import { ICreateUser, IUser } from "../interfaces/user";
 import * as UserModel from "../model/user";
+import bcrypt from "bcrypt";
 
 /**
  * Get all users.
@@ -30,8 +31,15 @@ export function getUserById(id: string): IUser | { error: string } {
  * @param {IUser} user - The user object to create.
  * @returns {{ message: string }} A message indicating the user creation.
  */
-export function createUser(user: IUser): { message: string } {
-  UserModel.createUser(user);
+export async function createUser(user: ICreateUser) {
+  if (getUserByEmail(user.email)) {
+    return { error: "User with this email exists" };
+  }
+  const password = await bcrypt.hash(user.password, 10);
+  UserModel.createUser({
+    ...user,
+    password,
+  });
   return { message: "User Created" };
 }
 
@@ -69,4 +77,9 @@ export function deleteUser(
     };
   }
   return { message: `User with id ${id} deleted` };
+}
+
+export function getUserByEmail(email: string) {
+  const data = UserModel.getUserByEmail(email);
+  return data;
 }

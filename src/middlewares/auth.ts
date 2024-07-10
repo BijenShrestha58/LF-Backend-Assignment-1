@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import config from "../config";
-import { verify } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { IUser } from "../interfaces/user";
 import { Request } from "../interfaces/auth";
 import { UnauthenticatedError } from "../error/UnauthenticatedError";

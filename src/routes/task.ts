@@ -7,19 +7,20 @@ import {
   getTasksByUserId,
   updateTask,
 } from "../controller/task";
+import { authenticate, authorize } from "../middlewares/auth";
 
 const router = express();
 
-router.get("/", getTasks);
+router.get("/all", authenticate, authorize("admin"), getTasks);
 
-router.get("/:id", getTaskById);
+router.get("/:id", authenticate, authorize("admin"), getTaskById);
 
-router.get("/user/:id", getTasksByUserId);
+router.get("/", authenticate, getTasksByUserId);
 
-router.post("/", createTask);
+router.post("/", authenticate, createTask);
 
-router.put("/:id", updateTask);
+router.put("/:id", authenticate, updateTask);
 
-router.delete("/:id", deleteTask);
+router.delete("/:id", authenticate, deleteTask);
 
 export default router;

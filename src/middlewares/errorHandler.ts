@@ -3,6 +3,7 @@ import { NextFunction, Response } from "express";
 import HttpStatusCodes from "http-status-codes";
 import { UnauthenticatedError } from "../error/UnauthenticatedError";
 import loggerWithNameSpace from "../utils/logger";
+import { ForbiddenError } from "../error/ForbiddenError";
 
 const logger = loggerWithNameSpace("ErrorHandler");
 
@@ -24,6 +25,11 @@ export function genericErrorHandler(
 
   if (error instanceof UnauthenticatedError) {
     return res.status(HttpStatusCodes.UNAUTHORIZED).json({
+      message: error.message,
+    });
+  }
+  if (error instanceof ForbiddenError) {
+    return res.status(HttpStatusCodes.FORBIDDEN).json({
       message: error.message,
     });
   }

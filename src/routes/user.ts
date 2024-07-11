@@ -10,14 +10,14 @@ import { authenticate, authorize } from "../middlewares/auth";
 
 const router = express();
 
-router.get("/", authenticate, authorize("users.get"), getUsers);
+router.get("/", authenticate, authorize("admin"), getUsers);
 
-router.get("/:id", getUserById);
+router.get("/:id", authenticate, authorize("admin"), getUserById);
 
-router.post("/", createUser);
+router.post("/", authenticate, authorize("admin"), createUser);
 
-router.put("/:id", updateUser);
+router.put("/:id", authenticate, authorize("admin"), updateUser);
 
-router.delete("/:id", deleteUser);
+router.delete("/:id", authenticate, authorize("admin"), deleteUser);
 
 export default router;

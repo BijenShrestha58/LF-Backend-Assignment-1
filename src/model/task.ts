@@ -1,7 +1,8 @@
 import { status } from "../enums/status";
-import { ITask } from "../interfaces/task";
+import { ForbiddenError } from "../error/ForbiddenError";
+import { ICreateTask, ITask } from "../interfaces/task";
 
-const tasks = [
+const tasks: ITask[] = [
   {
     id: "1",
     name: "Laundry",
@@ -70,9 +71,9 @@ export function getTasksByUserId(id: string): ITask[] {
  * Create a new task and add it to the tasks array.
  * @param {ITask} task - The task object to create.
  */
-export function createTask(task: ITask): void {
+export function createTask(userId: string, task: ICreateTask): void {
   const newId = `${Number(tasks[tasks.length - 1].id) + 1}`;
-  tasks.push({ id: newId, ...task });
+  tasks.push({ id: newId, ...task, userId: userId });
 }
 
 /**
@@ -81,11 +82,15 @@ export function createTask(task: ITask): void {
  * @param {ITask} task - The updated task object.
  * @returns {number} Index of the updated task in the tasks array, or -1 if the task was not found.
  */
-export function updateTask(id: string, task: ITask): number {
+export function updateTask(id: string, task: ITask, userId: string): number {
   const targetTaskIndex = tasks.findIndex((t) => t.id === id);
-  if (targetTaskIndex !== -1) {
-    tasks[targetTaskIndex] = { ...tasks[targetTaskIndex], ...task };
+  if (targetTaskIndex === -1) {
+    return targetTaskIndex;
   }
+  if (tasks[targetTaskIndex].userId !== userId) {
+    throw new ForbiddenError("Can only update user's own tasks");
+  }
+  tasks[targetTaskIndex] = { ...tasks[targetTaskIndex], ...task };
   return targetTaskIndex;
 }
 
@@ -94,10 +99,14 @@ export function updateTask(id: string, task: ITask): number {
  * @param {string} id - The ID of the task to delete.
  * @returns {number} Index of the deleted task in the tasks array, or -1 if the task was not found.
  */
-export function deleteTask(id: string): number {
+export function deleteTask(id: string, userId: string): number {
   const targetTaskIndex = tasks.findIndex((t) => t.id === id);
-  if (targetTaskIndex !== -1) {
-    tasks.splice(targetTaskIndex, 1);
+  if (targetTaskIndex === -1) {
+    return targetTaskIndex;
   }
+  if (tasks[targetTaskIndex].userId !== userId) {
+    throw new ForbiddenError("Can only delete user's own tasks");
+  }
+  tasks.splice(targetTaskIndex, 1);
   return targetTaskIndex;
 }

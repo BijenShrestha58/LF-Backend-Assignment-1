@@ -1,4 +1,5 @@
-import { ITask } from "../interfaces/task";
+import { userInfo } from "os";
+import { ICreateTask, ITask } from "../interfaces/task";
 import * as TaskModel from "../model/task";
 
 /**
@@ -45,8 +46,11 @@ export function getTasksByUserId(id: string) {
  * @param {ITask} task - The task object to create.
  * @returns {{ message: string }} A message indicating the task creation.
  */
-export function createTask(task: ITask): { message: string } {
-  TaskModel.createTask(task);
+export function createTask(
+  userId: string,
+  task: ICreateTask
+): { message: string } {
+  TaskModel.createTask(userId, task);
   return { message: "Task Created" };
 }
 
@@ -58,9 +62,10 @@ export function createTask(task: ITask): { message: string } {
  */
 export function updateTask(
   id: string,
-  task: ITask
+  task: ITask,
+  userId: string
 ): { message: string } | { error: string } {
-  const data = TaskModel.updateTask(id, task);
+  const data = TaskModel.updateTask(id, task, userId);
   if (data === -1) {
     return {
       error: `Task with id ${id} not found`,
@@ -75,9 +80,10 @@ export function updateTask(
  * @returns {{ message: string } | { error: string }} A message indicating the task deletion or an error object if the task was not found.
  */
 export function deleteTask(
-  id: string
+  id: string,
+  userId: string
 ): { message: string } | { error: string } {
-  const data = TaskModel.deleteTask(id);
+  const data = TaskModel.deleteTask(id, userId);
 
   if (data === -1) {
     return {

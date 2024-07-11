@@ -1,5 +1,7 @@
-import { Request, Response } from "express";
+import { Request } from "../interfaces/auth";
+import { Response } from "express";
 import * as TaskService from "../service/task";
+import { UnauthenticatedError } from "../error/UnauthenticatedError";
 
 /**
  * Get all tasks.
@@ -33,7 +35,11 @@ export function getTaskById(req: Request, res: Response) {
  * @returns {void}
  */
 export function getTasksByUserId(req: Request, res: Response) {
-  const { id } = req.params;
+  if (!req.user) {
+    new UnauthenticatedError("Unauthenticated");
+    return;
+  }
+  const { id } = req.user;
   const data = TaskService.getTasksByUserId(id);
   res.json(data);
 }
@@ -45,8 +51,13 @@ export function getTasksByUserId(req: Request, res: Response) {
  * @returns {void}
  */
 export function createTask(req: Request, res: Response) {
+  if (!req.user) {
+    new UnauthenticatedError("Unauthenticated");
+    return;
+  }
+  const { id } = req.user;
   const { body } = req;
-  const data = TaskService.createTask(body);
+  const data = TaskService.createTask(id, body);
   res.json(data);
 }
 
@@ -57,9 +68,14 @@ export function createTask(req: Request, res: Response) {
  * @returns {void}
  */
 export function updateTask(req: Request, res: Response) {
+  if (!req.user) {
+    new UnauthenticatedError("Unauthenticated");
+    return;
+  }
   const { id } = req.params;
   const { body } = req;
-  const data = TaskService.updateTask(id, body);
+  const { id: userId } = req.user;
+  const data = TaskService.updateTask(id, body, userId);
   res.json(data);
 }
 
@@ -70,7 +86,12 @@ export function updateTask(req: Request, res: Response) {
  * @returns {void}
  */
 export function deleteTask(req: Request, res: Response) {
+  if (!req.user) {
+    new UnauthenticatedError("Unauthenticated");
+    return;
+  }
   const { id } = req.params;
-  const data = TaskService.deleteTask(id);
+  const { id: userId } = req.user;
+  const data = TaskService.deleteTask(id, userId);
   res.json(data);
 }

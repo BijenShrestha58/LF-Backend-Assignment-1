@@ -4,6 +4,7 @@ import { sign, verify } from "jsonwebtoken";
 import { IUser } from "../interfaces/user";
 import { Request } from "../interfaces/auth";
 import { UnauthenticatedError } from "../error/UnauthenticatedError";
+import { ForbiddenError } from "../error/ForbiddenError";
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
@@ -38,7 +39,7 @@ export function authorize(permission: string) {
   return (req: Request, res: Response, next: NextFunction) => {
     const user = req.user!;
     if (!user.permissions.includes(permission)) {
-      next(new Error("Forbidden"));
+      next(new ForbiddenError("Forbidden"));
     }
 
     next();

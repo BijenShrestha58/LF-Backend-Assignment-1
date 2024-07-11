@@ -2,11 +2,18 @@ import { ICreateUser, IUser } from "../interfaces/user";
 
 const users: IUser[] = [
   {
-    name: "User 1",
-    email: "user@gmail.com",
-    password: "$2b$10$Q0lt2JZR8LXUynB9uhVgSeXIVNKAL4zx0tiISGWdQREvNUF0zK.xe",
+    name: "admin",
+    email: "admin@gmail.com",
+    password: "$2a$10$XQ3983wPW8Su7evc1YJ.bOYFHmloDSUnEv4DJcoFQc4fnQlDuVTnW", //admin
     id: "1",
-    permissions: ["users.get"],
+    permissions: ["admin"],
+  },
+  {
+    name: "user 1",
+    email: "user@gmail.com",
+    password: "$2b$10$Q0lt2JZR8LXUynB9uhVgSeXIVNKAL4zx0tiISGWdQREvNUF0zK.xe", //thisthat
+    id: "2",
+    permissions: ["user"],
   },
 ];
 

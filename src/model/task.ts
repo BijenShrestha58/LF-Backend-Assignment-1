@@ -1,45 +1,5 @@
-import { status } from "../enums/status";
-import { ForbiddenError } from "../error/ForbiddenError";
 import { ICreateTask, ITask } from "../interfaces/task";
-
-const tasks: ITask[] = [
-  {
-    id: "1",
-    name: "Laundry",
-    status: status.TODO,
-    userId: "1",
-  },
-  {
-    id: "2",
-    name: "Assignment",
-    status: status.TODO,
-    userId: "1",
-  },
-  {
-    id: "3",
-    name: "Car wash",
-    status: status.TODO,
-    userId: "2",
-  },
-  {
-    id: "4",
-    name: "Assignment",
-    status: status.TODO,
-    userId: "2",
-  },
-  {
-    id: "5",
-    name: "Cooking",
-    status: status.TODO,
-    userId: "2",
-  },
-  {
-    id: "6",
-    name: "Laundry",
-    status: status.TODO,
-    userId: "3",
-  },
-];
+import { tasks } from "../mockdata/task";
 
 /**
  * Get all tasks.

@@ -6,13 +6,20 @@ const users: IUser[] = [
     email: "admin@gmail.com",
     password: "$2a$10$XQ3983wPW8Su7evc1YJ.bOYFHmloDSUnEv4DJcoFQc4fnQlDuVTnW", //admin
     id: "1",
-    permissions: ["admin"],
+    permissions: ["admin", "user"],
   },
   {
     name: "user 1",
     email: "user@gmail.com",
     password: "$2b$10$Q0lt2JZR8LXUynB9uhVgSeXIVNKAL4zx0tiISGWdQREvNUF0zK.xe", //thisthat
     id: "2",
+    permissions: ["user"],
+  },
+  {
+    id: "3",
+    name: "Bijen",
+    email: "bijen@gmail.com",
+    password: "$2b$10$36hSuF5emU/hZz/6cD.nOe6jPsHGUniGWvnaaSMorrNnJNv.qE9yS", //Bijen@123
     permissions: ["user"],
   },
 ];
@@ -40,7 +47,7 @@ export function getUserById(id: string): IUser | undefined {
  */
 export function createUser(user: ICreateUser): void {
   const newId = `${Number(users[users.length - 1].id) + 1}` || "1";
-  users.push({ id: newId, ...user, permissions: [] });
+  users.push({ id: newId, ...user });
 }
 
 /**
@@ -70,6 +77,11 @@ export function deleteUser(id: string): number {
   return targetUserIndex;
 }
 
+/**
+ * Retrieves a user object from the users array based on the provided email address.
+ * @param {string} email - The email address of the user to retrieve.
+ * @returns {IUser|null} The user object if found, or null if no user exists with the provided email.
+ */
 export function getUserByEmail(email: string) {
   return users.find(({ email: userEmail }) => userEmail === email);
 }

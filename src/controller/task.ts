@@ -2,6 +2,9 @@ import { Request } from "../interfaces/auth";
 import { Response } from "express";
 import * as TaskService from "../service/task";
 import { UnauthenticatedError } from "../error/UnauthenticatedError";
+import loggerWithNameSpace from "../utils/logger";
+
+const logger = loggerWithNameSpace("TaskController");
 
 /**
  * Get all tasks.
@@ -11,6 +14,8 @@ import { UnauthenticatedError } from "../error/UnauthenticatedError";
  */
 export function getTasks(req: Request, res: Response) {
   const data = TaskService.getTasks();
+  logger.info("Called getTasks");
+
   res.json(data);
 }
 
@@ -24,6 +29,7 @@ export function getTaskById(req: Request, res: Response) {
   const { id } = req.params;
 
   const data = TaskService.getTaskById(id);
+  logger.info("Called getTaskById");
 
   res.json(data);
 }
@@ -41,6 +47,8 @@ export function getTasksByUserId(req: Request, res: Response) {
   }
   const { id } = req.user;
   const data = TaskService.getTasksByUserId(id);
+  logger.info("Called getTasksByUserId");
+
   res.json(data);
 }
 
@@ -58,6 +66,8 @@ export function createTask(req: Request, res: Response) {
   const { id } = req.user;
   const { body } = req;
   const data = TaskService.createTask(id, body);
+  logger.info("Called createTask");
+
   res.json(data);
 }
 
@@ -76,6 +86,8 @@ export function updateTask(req: Request, res: Response) {
   const { body } = req;
   const { id: userId } = req.user;
   const data = TaskService.updateTask(id, body, userId);
+  logger.info("Called updateTask");
+
   res.json(data);
 }
 
@@ -93,5 +105,7 @@ export function deleteTask(req: Request, res: Response) {
   const { id } = req.params;
   const { id: userId } = req.user;
   const data = TaskService.deleteTask(id, userId);
+  logger.info("Called deleteTask");
+
   res.json(data);
 }

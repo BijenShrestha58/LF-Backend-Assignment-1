@@ -4,14 +4,23 @@ import { createUser, getUserByEmail } from "./user";
 import bcrypt from "bcrypt";
 import config from "../config";
 import { permission } from "process";
+import { UnauthenticatedError } from "../error/UnauthenticatedError";
+import loggerWithNameSpace from "../utils/logger";
 
+const logger = loggerWithNameSpace("AuthService");
+
+/**
+ * Authenticates a user based on email and password, and generates access and refresh tokens.
+ * @param {Pick<IUser, "email" | "password">} body - The object containing user email and password.
+ * @returns {Promise<{ accessToken: string, refreshToken: string }>} An object containing access and refresh tokens.
+ * @throws {UnauthenticatedError} If authentication fails due to invalid email or password.
+ */
 export async function login(body: Pick<IUser, "email" | "password">) {
   const existingUser = getUserByEmail(body.email);
+  logger.info("Called getUserByEmail");
 
   if (!existingUser) {
-    return {
-      error: "Invalid email or password",
-    };
+    throw new UnauthenticatedError("Invalid email or password");
   }
 
   const isValidPassword = await bcrypt.compare(
@@ -20,9 +29,7 @@ export async function login(body: Pick<IUser, "email" | "password">) {
   );
 
   if (!isValidPassword) {
-    return {
-      error: "Invalid email or password",
-    };
+    throw new UnauthenticatedError("Invalid email or password");
   }
 
   const payload = {
@@ -46,8 +53,20 @@ export async function login(body: Pick<IUser, "email" | "password">) {
   };
 }
 
+/**
+ * Generates a new access token using a refresh token.
+ * @param {string} refreshToken - The refresh token used to generate a new access token.
+ * @returns {Promise<{ accessToken: string }>} An object containing the new access token.
+ * @throws {UnauthenticatedError} If the refresh token verification fails.
+ */
 export async function refresh(refreshToken: string) {
-  const decoded = await verify(refreshToken, config.jwt.secret!);
+  let decoded;
+  try {
+    decoded = await verify(refreshToken, config.jwt.secret!);
+  } catch (e) {
+    throw new UnauthenticatedError("Invalid refresh token");
+  }
+
   const { id, name, email, permissions } = decoded as IUser;
 
   const payload = { id, name, email, permissions };

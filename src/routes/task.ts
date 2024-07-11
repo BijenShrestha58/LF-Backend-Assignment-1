@@ -15,12 +15,12 @@ router.get("/all", authenticate, authorize("admin"), getTasks);
 
 router.get("/:id", authenticate, authorize("admin"), getTaskById);
 
-router.get("/", authenticate, getTasksByUserId);
+router.get("/", authenticate, authorize("user"), getTasksByUserId);
 
-router.post("/", authenticate, createTask);
+router.post("/", authenticate, authorize("user"), createTask);
 
-router.put("/:id", authenticate, updateTask);
+router.put("/:id", authenticate, authorize("user"), updateTask);
 
-router.delete("/:id", authenticate, deleteTask);
+router.delete("/:id", authenticate, authorize("user"), deleteTask);
 
 export default router;

@@ -88,7 +88,7 @@ export function updateTask(id: string, task: ITask, userId: string): number {
     return targetTaskIndex;
   }
   if (tasks[targetTaskIndex].userId !== userId) {
-    throw new ForbiddenError("Can only update user's own tasks");
+    return -2;
   }
   tasks[targetTaskIndex] = { ...tasks[targetTaskIndex], ...task };
   return targetTaskIndex;
@@ -105,7 +105,7 @@ export function deleteTask(id: string, userId: string): number {
     return targetTaskIndex;
   }
   if (tasks[targetTaskIndex].userId !== userId) {
-    throw new ForbiddenError("Can only delete user's own tasks");
+    return -2;
   }
   tasks.splice(targetTaskIndex, 1);
   return targetTaskIndex;

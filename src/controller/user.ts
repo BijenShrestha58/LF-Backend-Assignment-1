@@ -12,6 +12,7 @@ const logger = loggerWithNameSpace("UserController");
  */
 export function getUsers(req: Request, res: Response) {
   const data = UserService.getUsers();
+  logger.info("Called getUsers");
   res.json(data);
 }
 
@@ -38,6 +39,7 @@ export function getUserById(req: Request, res: Response) {
 export async function createUser(req: Request, res: Response) {
   const { body } = req;
   const data = await UserService.createUser(body);
+  logger.info("Called createUser");
   console.log(data);
   res.json(data);
 }
@@ -53,7 +55,7 @@ export function updateUser(req: Request, res: Response) {
   const { body } = req;
 
   const data = UserService.updateUser(id, body);
-
+  logger.info("Called updateUser");
   res.json(data);
 }
 
@@ -66,5 +68,6 @@ export function updateUser(req: Request, res: Response) {
 export function deleteUser(req: Request, res: Response) {
   const { id } = req.params;
   const data = UserService.deleteUser(id);
+  logger.info("Called deleteUser");
   res.json(data);
 }

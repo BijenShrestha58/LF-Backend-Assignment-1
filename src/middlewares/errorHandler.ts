@@ -26,33 +26,34 @@ export function genericErrorHandler(
     logger.error(error.stack);
   }
 
-  if (error instanceof UnauthenticatedError) {
-    return res.status(HttpStatusCodes.UNAUTHORIZED).json({
-      message: error.message,
-    });
-  }
-  if (error instanceof ForbiddenError) {
-    return res.status(HttpStatusCodes.FORBIDDEN).json({
-      message: error.message,
-    });
-  }
-  if (error instanceof BadRequestError) {
-    return res.status(HttpStatusCodes.BAD_REQUEST).json({
-      message: error.message,
-    });
-  }
-  if (error instanceof NotFoundError) {
-    return res.status(HttpStatusCodes.NOT_FOUND).json({
-      message: error.message,
-    });
-  }
-  if (error instanceof ConflictError) {
-    return res.status(HttpStatusCodes.CONFLICT).json({
-      message: error.message,
-    });
+  let statusCode: number;
+  let errorMessage: string;
+
+  switch (true) {
+    case error instanceof UnauthenticatedError:
+      statusCode = HttpStatusCodes.UNAUTHORIZED;
+      errorMessage = error.message;
+      break;
+    case error instanceof ForbiddenError:
+      statusCode = HttpStatusCodes.FORBIDDEN;
+      errorMessage = error.message;
+      break;
+    case error instanceof BadRequestError:
+      statusCode = HttpStatusCodes.BAD_REQUEST;
+      errorMessage = error.message;
+      break;
+    case error instanceof NotFoundError:
+      statusCode = HttpStatusCodes.NOT_FOUND;
+      errorMessage = error.message;
+      break;
+    case error instanceof ConflictError:
+      statusCode = HttpStatusCodes.CONFLICT;
+      errorMessage = error.message;
+      break;
+    default:
+      statusCode = HttpStatusCodes.INTERNAL_SERVER_ERROR;
+      errorMessage = "Internal Server Error";
   }
 
-  return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({
-    message: "Internal Server Error",
-  });
+  return res.status(statusCode).json({ message: errorMessage });
 }

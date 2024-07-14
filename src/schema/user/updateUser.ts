@@ -1,28 +1,14 @@
 import Joi from "joi";
 
-export const getUserQuerySchema = Joi.object({
-  q: Joi.string().optional(),
-
-  page: Joi.number().optional().messages({
-    "number.base": "Page must be a number",
-  }),
-}).options({
-  stripUnknown: true,
-});
-
-export const createUserBodySchema = Joi.object({
-  name: Joi.string().required().messages({
-    "any.required": "Name is required",
-  }),
-  email: Joi.string().email().required().messages({
-    "any.required": "Email is required",
+export const updateUserBodySchema = Joi.object({
+  name: Joi.string().optional(),
+  email: Joi.string().email().optional().messages({
     "string.email": "Email must be a valid format",
   }),
   password: Joi.string()
-    .required()
+    .optional()
     .min(8)
     .messages({
-      "any.required": "Password is required",
       "string.min": "Password must be atleast 8 characters long",
       "password.uppercase":
         "Password must have atleast one uppercase character",
@@ -44,7 +30,11 @@ export const createUserBodySchema = Joi.object({
       }
       return value;
     }),
-  permissions: Joi.required().messages({
-    "any.required": "Permissions is required",
+  permissions: Joi.optional(),
+});
+
+export const updateUserParamsSchema = Joi.object({
+  id: Joi.string().required().messages({
+    "any.required": "Id is required",
   }),
 });

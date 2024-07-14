@@ -23,7 +23,20 @@ export function validateReqBody(schema: Schema) {
       next(new BadRequestError(error.message));
     }
 
-    req.query = value;
+    req.body = value;
+
+    next();
+  };
+}
+
+export function validateReqParams(schema: Schema) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { error, value } = schema.validate(req.params);
+    if (error) {
+      next(new BadRequestError(error.message));
+    }
+
+    req.params = value;
 
     next();
   };

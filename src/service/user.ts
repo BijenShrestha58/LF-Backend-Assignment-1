@@ -23,7 +23,7 @@ export function getUsers(): IUser[] {
  * @returns {IUser} The user object if found.
  * @throws {NotFoundError} If no user is found with the provided ID.
  */
-export function getUserById(id: string): IUser {
+export function getUserById(id: string) {
   const data = UserModel.getUserById(id);
   logger.info("Called getUserById");
   if (!data) {
@@ -97,4 +97,8 @@ export function getUserByEmail(email: string) {
   const data = UserModel.getUserByEmail(email);
   logger.info("Called getUserByEmail");
   return data;
+}
+
+export function add(a, b) {
+  return a + b;
 }

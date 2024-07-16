@@ -15,6 +15,7 @@ export function getTasks(): ITask[] {
  * @returns {ITask | undefined} The task object if found, otherwise undefined.
  */
 export function getTaskById(id: string): ITask | undefined {
+  console.log(id);
   return tasks.find((task) => task.id === id);
 }
 

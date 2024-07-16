@@ -14,10 +14,8 @@ import {
 } from "../middlewares/validator";
 import { createUserBodySchema } from "../schema/user/createUser";
 import { getUserQuerySchema } from "../schema/user/getUser";
-import {
-  updateUserBodySchema,
-  updateUserParamsSchema,
-} from "../schema/user/updateUser";
+import { updateUserBodySchema } from "../schema/user/updateUser";
+import { userParamsSchema } from "../schema/user/params";
 
 const router = express();
 
@@ -29,7 +27,13 @@ router.get(
   getUsers
 );
 
-router.get("/:id", authenticate, authorize("admin"), getUserById);
+router.get(
+  "/:id",
+  authenticate,
+  authorize("admin"),
+  validateReqParams(userParamsSchema),
+  getUserById
+);
 
 router.post(
   "/",
@@ -43,11 +47,17 @@ router.put(
   "/:id",
   authenticate,
   authorize("admin"),
-  validateReqParams(updateUserParamsSchema),
+  validateReqParams(userParamsSchema),
   validateReqBody(updateUserBodySchema),
   updateUser
 );
 
-router.delete("/:id", authenticate, authorize("admin"), deleteUser);
+router.delete(
+  "/:id",
+  authenticate,
+  authorize("admin"),
+  validateReqParams(userParamsSchema),
+  deleteUser
+);
 
 export default router;

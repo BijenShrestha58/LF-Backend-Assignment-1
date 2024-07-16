@@ -32,9 +32,3 @@ export const updateUserBodySchema = Joi.object({
     }),
   permissions: Joi.optional(),
 });
-
-export const updateUserParamsSchema = Joi.object({
-  id: Joi.string().required().messages({
-    "any.required": "Id is required",
-  }),
-});

@@ -40,8 +40,8 @@ describe("User Integration Test Suite", () => {
         .set("Authorization", token);
 
       expect(response.body).toHaveProperty("id", "1");
-      expect(response.body).toHaveProperty("name", "Kalash");
-      expect(response.body).toHaveProperty("email", "kalash1@gmail.com");
+      expect(response.body).toHaveProperty("name", "Bijen");
+      expect(response.body).toHaveProperty("email", "Bijen1@gmail.com");
     });
 
     it("Should return error when user is not found", async () => {
@@ -63,7 +63,7 @@ describe("User Integration Test Suite", () => {
       const response = await request(app)
         .get("/users")
         .set("Authorization", token)
-        .query({ q: "Kalash" });
+        .query({ q: "Bijen" });
 
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Array);
@@ -91,8 +91,8 @@ describe("User Integration Test Suite", () => {
         .set("Authorization", token)
         .send({
           id: userId,
-          name: "Updated Kalash",
-          email: "kalash1@gmail.com",
+          name: "Updated Bijen",
+          email: "Bijen1@gmail.com",
           password:
             "$2b$10$I24gdNea7i6fSXPl1uy96.cle9N5v6Zt8HyZTkTpFhD.kwzHeBHNW",
           permissions: [
@@ -115,9 +115,9 @@ describe("User Integration Test Suite", () => {
         .set("Authorization", token)
         .send({
           id: "2",
-          name: "khaaaa",
-          email: "kalash3@gmail.com",
-          password: "kalasH123.!",
+          name: "Bijen",
+          email: "Bijen4@gmail.com",
+          password: "Bijen123.!",
           permissions: [],
         });
 

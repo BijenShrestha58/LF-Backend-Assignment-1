@@ -19,13 +19,13 @@ This repository contains the backend implementation for a To-Do application, off
 - The dependencies must be installed by running npm install in the terminal
 
 - Alternatively, the image can be pulled from Dockerhub using the command:
-  `docker pull bijenshrestha58/todo_backend:latest`
+  `docker pull bijenshrestha58/todo_backend:v7`
 
 ### Executing Program
 
 - If cloned, the project can be run using npm start command.
 - If the docker image is pulled, the project can be run using the command:
-  `docker run -d -p 8000:8000 bijenshrestha58/todo_backend:latest`
+  `docker run -d -p 8000:8000 bijenshrestha58/todo_backend:v7`
 - The APIs can then be accessed using API clients like Postman or Thunder in PORT 8000.
 
 ### Author

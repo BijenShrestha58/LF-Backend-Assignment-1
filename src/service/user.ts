@@ -1,6 +1,6 @@
 import { ConflictError } from "../error/ConflictError";
 import { NotFoundError } from "../error/NotFoundError";
-import { ICreateUser, IUser } from "../interfaces/user";
+import { getUserQuery, ICreateUser, IUser } from "../interfaces/user";
 import * as UserModel from "../model/user";
 import bcrypt from "bcrypt";
 import loggerWithNameSpace from "../utils/logger";
@@ -11,11 +11,17 @@ const logger = loggerWithNameSpace("UserService");
  * Get all users.
  * @returns {IUser[]} An array of user objects.
  */
-export function getUsers(): IUser[] {
-  const data = UserModel.getUsers();
-  logger.info("Called getUsers");
-  return data;
-}
+export const getUsers = async (query: getUserQuery) => {
+  const data = await UserModel.UserModel.getUsers(query);
+  if (!data) throw new NotFoundError("No users found");
+  const count = await UserModel.UserModel.count(query);
+  const meta = {
+    page: query.page,
+    size: data.length,
+    total: +count.count,
+  };
+  return { data, meta };
+};
 
 /**
  * Retrieves a user by their ID.
@@ -24,7 +30,7 @@ export function getUsers(): IUser[] {
  * @throws {NotFoundError} If no user is found with the provided ID.
  */
 export function getUserById(id: string) {
-  const data = UserModel.getUserById(id);
+  const data = UserModel.UserModel.getUserById(id);
   logger.info("Called getUserById");
   if (!data) {
     throw new NotFoundError(`User with id ${id} not found`);
@@ -43,7 +49,7 @@ export async function createUser(user: ICreateUser) {
     throw new ConflictError("User with this email exists");
   }
   const password = await bcrypt.hash(user.password, 10);
-  UserModel.createUser({
+  UserModel.UserModel.createUser({
     ...user,
     password,
   });
@@ -62,12 +68,9 @@ export function updateUser(
   id: string,
   user: IUser
 ): { message: string } | { error: string } {
-  const data = UserModel.updateUser(id, user);
+  const data = UserModel.UserModel.updateUser(id, user);
   logger.info("Called updateUser");
 
-  if (data === -1) {
-    throw new NotFoundError(`User with id ${id} not found`);
-  }
   return { message: `User with id ${id} updated` };
 }
 
@@ -80,11 +83,9 @@ export function updateUser(
 export function deleteUser(
   id: string
 ): { message: string } | { error: string } {
-  const data = UserModel.deleteUser(id);
+  const data = UserModel.UserModel.deleteUser(id);
   logger.info("Called deleteUser");
-  if (data === -1) {
-    throw new NotFoundError(`User with id ${id} not found`);
-  }
+
   return { message: `User with id ${id} deleted` };
 }
 
@@ -94,7 +95,7 @@ export function deleteUser(
  * @returns {IUser | null} The user object if found, or null if no user exists with the provided email.
  */
 export function getUserByEmail(email: string) {
-  const data = UserModel.getUserByEmail(email);
+  const data = UserModel.UserModel.getUserByEmail(email);
   logger.info("Called getUserByEmail");
   return data;
 }

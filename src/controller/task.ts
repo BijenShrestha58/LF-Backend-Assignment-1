@@ -15,7 +15,6 @@ const logger = loggerWithNameSpace("TaskController");
 export function getTasks(req: Request, res: Response) {
   const data = TaskService.getTasks();
   logger.info("Called getTasks");
-
   res.json(data);
 }
 
@@ -25,7 +24,7 @@ export function getTasks(req: Request, res: Response) {
  * @param {Response} res - The Express Response object.
  * @returns {void}
  */
-export function getTaskById(req: Request, res: Response) {
+export function getTaskById(req: Request<{ id: string }>, res: Response) {
   const { id } = req.params;
 
   const data = TaskService.getTaskById(id);
@@ -77,7 +76,7 @@ export function createTask(req: Request, res: Response) {
  * @param {Response} res - The Express Response object.
  * @returns {void}
  */
-export function updateTask(req: Request, res: Response) {
+export function updateTask(req: Request<{ id: string }>, res: Response) {
   if (!req.user) {
     new UnauthenticatedError("Unauthenticated");
     return;
@@ -97,7 +96,7 @@ export function updateTask(req: Request, res: Response) {
  * @param {Response} res - The Express Response object.
  * @returns {void}
  */
-export function deleteTask(req: Request, res: Response) {
+export function deleteTask(req: Request<{ id: string }>, res: Response) {
   if (!req.user) {
     new UnauthenticatedError("Unauthenticated");
     return;

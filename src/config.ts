@@ -17,6 +17,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     name: process.env.DB_NAME,
   },
+  testBearerToken: process.env.BEARER,
 };
 
 export default config;

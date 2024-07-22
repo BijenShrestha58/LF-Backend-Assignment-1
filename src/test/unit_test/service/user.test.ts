@@ -10,7 +10,7 @@ describe("User Service Test Suite", () => {
     let userModelGetUserByIdStub: sinon.SinonStub;
 
     beforeEach(() => {
-      userModelGetUserByIdStub = sinon.stub(UserModel, "getUserById");
+      userModelGetUserByIdStub = sinon.stub(UserModel.UserModel, "getUserById");
     });
 
     afterEach(() => {
@@ -45,7 +45,7 @@ describe("User Service Test Suite", () => {
 
     beforeEach(() => {
       bcryptHashStub = sinon.stub(bcrypt, "hash");
-      userModelCreateUserStub = sinon.stub(UserModel, "createUser");
+      userModelCreateUserStub = sinon.stub(UserModel.UserModel, "createUser");
     });
 
     afterEach(() => {
@@ -85,7 +85,7 @@ describe("User Service Test Suite", () => {
 
     beforeEach(() => {
       bcryptHashStub = sinon.stub(bcrypt, "hash");
-      userModelUpdateUserStub = sinon.stub(UserModel, "updateUser");
+      userModelUpdateUserStub = sinon.stub(UserModel.UserModel, "updateUser");
     });
 
     afterEach(() => {

@@ -12,3 +12,9 @@ export interface ICreateUser {
   password: string;
   permissions: string[];
 }
+
+export interface getUserQuery {
+  q?: string;
+  page?: number;
+  size?: number;
+}

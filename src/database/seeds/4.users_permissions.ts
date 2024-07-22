@@ -15,11 +15,11 @@ export function seed(knex: Knex): Promise<void> {
       return knex(TABLE_NAME).insert([
         {
           userId: 1,
-          permissionsId: 3,
+          permissionsId: 1,
         },
         {
           userId: 1,
-          permissionsId: 4,
+          permissionsId: 2,
         },
       ]);
     });

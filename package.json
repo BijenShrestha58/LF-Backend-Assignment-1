@@ -8,7 +8,7 @@
     "test:integration": "mocha --require ts-node/register 'src/test/integration_test/*.test.ts'",
     "knex": "knex --knexfile=./src/knexfile.ts",
     "migrate:make": "npm run knex migrate:make --verbose",
-    "migrate": "npm run knex migrate:latest --verbose",
+    "migrate:run": "npm run knex migrate:latest --verbose",
     "rollback": "npm run knex migrate:rollback --verbose",
     "seed:make": "npm run knex seed:make --verbose",
     "seed:run": "npm run knex seed:run --verbose"

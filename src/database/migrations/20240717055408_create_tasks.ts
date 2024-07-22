@@ -1,9 +1,9 @@
 import { Knex } from "knex";
 
-const TABLE_NAME = "users";
+const TABLE_NAME = "tasks";
 
 /**
- * Create table users.
+ * Create table tasks.
  *
  * @param   {Knex} knex
  * @returns {Promise}
@@ -14,16 +14,28 @@ export async function up(knex: Knex): Promise<void> {
 
     table.string("name", 100).notNullable();
 
-    table.string("email", 100).notNullable();
+    table.bigInteger("statusId").notNullable();
 
-    table.string("password", 100).notNullable();
+    table.bigInteger("userId").notNullable();
 
     table.timestamp("created_at").notNullable().defaultTo(knex.raw("now()"));
+
+    table
+      .foreign("userId")
+      .references("id")
+      .inTable("users")
+      .onDelete("CASCADE");
+
+    table
+      .foreign("statusId")
+      .references("id")
+      .inTable("status")
+      .onDelete("CASCADE");
   });
 }
 
 /**
- * Drop table users.
+ * Drop table tasks.
  *
  * @param   {Knex} knex
  * @returns {Promise}

@@ -1,19 +1,11 @@
 import sinon from "sinon";
-import { add, createUser, getUserById } from "../../../service/user";
+import { updateUser, createUser, getUserById } from "../../../service/user";
 import expect from "expect";
 import * as UserModel from "../../../model/user";
 import { NotFoundError } from "../../../error/NotFoundError";
 import bcrypt from "bcrypt";
 
 describe("User Service Test Suite", () => {
-  describe("add", () => {
-    it("Should return the sum of two numbers", () => {
-      const output = add(1, 2);
-
-      expect(output).toBe(3);
-    });
-  });
-
   describe("getUserbyId", () => {
     let userModelGetUserByIdStub: sinon.SinonStub;
 
@@ -25,7 +17,7 @@ describe("User Service Test Suite", () => {
       userModelGetUserByIdStub.restore();
     });
 
-    it("Should throw error when user is not found ", () => {
+    it("Should throw error when user is not found", () => {
       userModelGetUserByIdStub.returns(undefined);
 
       expect(() => getUserById("100")).toThrow(
@@ -79,6 +71,45 @@ describe("User Service Test Suite", () => {
 
       expect(userModelCreateUserStub.callCount).toBe(1);
       expect(userModelCreateUserStub.getCall(0).args).toStrictEqual([
+        {
+          ...user,
+          password: "hashedPassword",
+        },
+      ]);
+    });
+  });
+
+  describe("updateUser", () => {
+    let bcryptHashStub: sinon.SinonStub;
+    let userModelUpdateUserStub: sinon.SinonStub;
+
+    beforeEach(() => {
+      bcryptHashStub = sinon.stub(bcrypt, "hash");
+      userModelUpdateUserStub = sinon.stub(UserModel, "updateUser");
+    });
+
+    afterEach(() => {
+      bcryptHashStub.restore;
+      userModelUpdateUserStub.restore;
+    });
+
+    it("Should update user", async () => {
+      bcryptHashStub.resolves("hashedPassword");
+
+      const user = {
+        name: "User 1",
+        email: "user1@email.com",
+        password: "test1234",
+        permissions: ["users.get"],
+      };
+
+      // await updateUser(user);
+
+      expect(bcryptHashStub.callCount).toBe(1);
+      expect(bcryptHashStub.getCall(0).args).toStrictEqual([user.password, 10]);
+
+      expect(userModelUpdateUserStub.callCount).toBe(1);
+      expect(userModelUpdateUserStub.getCall(0).args).toStrictEqual([
         {
           ...user,
           password: "hashedPassword",

@@ -98,7 +98,3 @@ export function getUserByEmail(email: string) {
   logger.info("Called getUserByEmail");
   return data;
 }
-
-export function add(a, b) {
-  return a + b;
-}

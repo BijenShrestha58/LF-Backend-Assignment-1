@@ -1,9 +1,9 @@
 import { Knex } from "knex";
 
-const TABLE_NAME = "users";
+const TABLE_NAME = "permissions";
 
 /**
- * Create table users.
+ * Create table permissions.
  *
  * @param   {Knex} knex
  * @returns {Promise}
@@ -14,16 +14,12 @@ export async function up(knex: Knex): Promise<void> {
 
     table.string("name", 100).notNullable();
 
-    table.string("email", 100).notNullable();
-
-    table.string("password", 100).notNullable();
-
     table.timestamp("created_at").notNullable().defaultTo(knex.raw("now()"));
   });
 }
 
 /**
- * Drop table users.
+ * Drop table permissions.
  *
  * @param   {Knex} knex
  * @returns {Promise}
